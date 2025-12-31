@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Favorite Person</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        /* CSS - The Design */
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #fff0f3;
+            --dark-pink: #590d22;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--soft-pink);
+            color: var(--dark-pink);
+            text-align: center;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent */
+            backdrop-filter: blur(10px); /* Blur effect like iPhone menus */
+            padding: 12px 20px;
+            position: sticky;
+            top: 15px; /* Floats slightly from the top */
+            margin: 0 20px;
+            border-radius: 50px; /* Rounded pill shape */
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        nav button {
+            background: none;
+            border: none; /* Remove the border for a cleaner look */
+            color: #888; /* Gray out the buttons that aren't active */
+            padding: 10px 18px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 20px;
+        }
+
+        /* This class will be added by JavaScript */
+        nav button.active {
+            background: var(--primary-pink);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+        }
+
+        nav button:hover {
+            background: var(--primary-pink);
+            color: white;
+        }
+
+        .page {
+            display: none; /* Hidden by default */
+            padding: 50px 20px;
+            max-width: 800px;
+            margin: auto;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .hero-container {
+            padding: 40px 20px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(255, 77, 109, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            color: var(--primary-pink);
+            margin-bottom: 10px;
+        }
+
+        .quote {
+            font-style: italic;
+        }
+        .subtitle {
+            font-style: italic;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        /* Countdown Styling */
+        .countdown-box {
+            background: var(--soft-pink);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 300px;
+        }
+
+        #timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-pink);
+            letter-spacing: 1px;
+        }
+
+        /* Floating Heart Animation */
+        .floating-hearts {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.2;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        #main { display: block; } /* Show home page first */
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bottom {
+            margin: 15px;
+        }
+
+        .below {
+            margin: 30px;
+        }
+
+        #button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #reason-text {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            min-height: 50px;
+            color: #590d22;
+        }
+        h2 {
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        button.action-btn {
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .gallery-grid img:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <button onclick="showPage('main', event)" class="active">
+        <span class="material-symbols-outlined">home</span>
+        <span class="nav-text">Home</span>
+    </button>
+
+    <audio id="myLoveSong" loop>
+    <source src="./assets/SUGARCANE - Kung Maging Akin Ka Official Lyric Video.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>
+
+    <button id="musicControl" onclick="toggleMusic()" class="music-btn">
+        <span id="musicIcon" class="material-symbols-outlined">play_circle</span>
+        <span class="nav-text">Music</span>
+    </button>
+
+    <button onclick="showPage('randomizer', event)">
+        <span class="material-symbols-outlined">favorite</span>
+        <span class="nav-text">Games</span>
+    </button>
+    <button onclick="showPage('letters', event)">
+        <span class="material-symbols-outlined">mail</span>
+        <span class="nav-text">Letters</span>
+    </button>
+    <button onclick="showPage('gallery', event)">
+        <span class="material-symbols-outlined">image</span>
+        <span class="nav-text">Gallery</span>
+    </button>
+</nav>
+
+<section id="main" class="page">
+    <div class="hero-container">
+        <div class="floating-hearts">❤️</div>
+        
+        <h1 class="main-title">Happy New Year, Cha!❤️</h1>
+        <p class="subtitle">You made my 2025.</p>
+        
+        <div class="countdown-box">
+            <h3>Days until Year 2026:</h3>
+            <div id="timer">00d 00h 00m 00s</div>
+        </div>
+
+        <div class="welcome-note">
+            <p class="quote">"The year may have ended, but our love and care will always be there"</p>
+        </div>
+    </div>
+
+            <div class="bottom card">
+                <h2>Little Note:</h2>
+            <p id="justify">
+                I kinda felt na we might not be able to see each other na, ngayong paparating na New Year hehe.&#9996;
+                To make up for it and to somehow still celebrate the beginning of 2026 with you, I made this website to revisit 
+                and appreciate the memories that I have shared with you this 2025.&#128541;
+            </p>
+            <p>
+                Browse through the tabs above to see what I made for you! Enjoy, lovelove koh!&#128516;
+            </p>
+        </div>
+</section>
+
+    <section id="randomizer" class="page">
+        <div class="card">
+            <h2>Things I Love About You</h2>
+            <p id="reason-display">Click the button to find out...</p>
+            <button class="action-btn" onclick="getRandomReason()">Hit Me with Love</button>
+        </div>
+
+        <div class="below card">
+            <h2>The Philip Quiz</h2>
+            <p id="reason-display">Click the button to test how much you know Philip...</p>
+            <button class="action-btn" onclick="location.href='https:/gemini.google.com/share/3fa28089eda9'">Take the Quiz</button>
+        </div>
+    </section>
+
+    <section id="letters" class="page">
+        <div class="card">
+            <h2>Open When...</h2>
+            <button class="action-btn" onclick="readLetter('sad')">You're Sad</button>
+            <button class="action-btn" onclick="readLetter('happy')">You're Happy</button>
+            <button class="action-btn" onclick="readLetter('missing')">You Miss Me</button>
+            <div id="letter-display" style="margin-top: 30px; font-style: italic;"></div>
+        </div>
+
+        <div class="below card">
+                <h2>Letter to Charis</h2>
+            <p id="justify">
+                Happy New Year, Cha!!🎉 I am truly honored talaga to have been able to celebrate both Christmas and New Year with you. Hindi man tayo together when we were celebrating, at least I know for sure that this time, these holidays are extra special. Of course especially, because I know that you'll be there waiting for me. Who knows, baka this January masalubong na natin ang 2026 with our first date of the year??! 😛
+            </p>
+            <p>
+                Anyways, super many things has happened this 2025. This year might have just been my biggest plot twist ika nga hehe. Who would have thought that my crush from 2024 would give me this much love ngayong taon. And who would have thought that I would have been given this chance na salubungin ang New Year with you.🙌
+            </p>
+            <p>
+                In any case, I am just really glad about everything that we have been sharing these past few months. I am filled with joy sa bawat pagsimba natin. I am filled with joy sa tuwing bababa ako sa R.Papa Station, because it means that I'll be meeting you after a 2-hour bus ride. I am filled with joy sa tuwing may nagsesend ng reels sa social media accounts ko. Because I know that they would have come from you, and that machichika na naman kita for a couple of times. With that, thank you for giving me joy, Cha. Tunay kangang Goddess of blessing hehehe. I can't wait to grow more with you, and to experience more of this world with you. It would take a ton of words to look back on everything hehe.😅 I'll let us both reminisce nalang siguro through the "Gallery Tab" ng Website na to hehe.
+            </p>
+            <p>
+                Regardless of all, I wish you luck, vitality, and more happiness ngayong 2026.🎀 Kung maging akin ka, wala nang hahanapin pang iba. Tuloy pa rin ang panliligaw ko sayo this year and the coming years hanggang sa maging akin ka. I miss you, Cha! Take care po always!!
+            </p>
+        </div>
+    </section>
+
+    <section id="gallery" class="page">
+        <div class="bottom card">
+            <h2>My Favorite Moments With You</h2>
+            <div class="gallery-grid">
+                <img src="./assets/pic_with_cha.jpg" alt="Us 1">
+                <img src="./assets/pic_with_cha2.jpg" alt="Us 2">
+                <img src="./assets/pic_with_cha3.jpg" alt="Us 3">
+            </div>
+        </div>
+
+        <div class=" bottom card">
+            <h2>Senior High Days With You</h2>
+            <div class="gallery-grid">
+                <img src="./assets/senior_high_era1.jpg" alt="Us 1">
+                <img src="./assets/senior_high_era2.jpg" alt="Us 2">
+                <img src="./assets/senior_high_era3.jpg" alt="Us 3">
+            </div>
+        </div>
+
+        <div class=" bottom card">
+            <h2>Jolly Feels</h2>
+            <div class="gallery-grid">
+                <img src="./assets/jollibee1.jpg" alt="Us 1">
+                <img src="./assets/jollibee2.jpg" alt="Us 2">
+                <img src="./assets/jollibee3.jpg" alt="Us 3">
+            </div>
+        </div>
+
+        <div class=" bottom card">
+            <h2>Philip and Charis</h2>
+            <div class="gallery-grid">
+                <img src="./assets/date1.jpg" alt="Us 1">
+                <img src="./assets/date2.jpg" alt="Us 2">
+                <img src="./assets/date3.jpg" alt="Us 3">
+            </div>
+        </div>
+
+        <div class="card">
+        <h1>That's it for this Website, Cha!❤️</h1>
+        <p>Whenever you're feeling down, click the button below:</p>
+        
+        <div id="reason-text">Ready to see the Magic...?</div>
+        
+        <button id="button" onclick="showReason()">Magic Button!</button>
+    </div>
+    </section>
+
+    <script>
+        // PAGE NAVIGATION LOGIC
+        function showPage(pageId, event) {
+            // 1. Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.style.display = 'none');
+            
+            // 2. Show the specific page
+            document.getElementById(pageId).style.display = 'block';
+
+            // 3. Update the button styles
+            const buttons = document.querySelectorAll('nav button');
+            buttons.forEach(btn => btn.classList.remove('active')); // Remove highlight from all
+            
+            // 4. Add highlight to the one that was clicked
+            event.currentTarget.classList.add('active');
+        }
+        
+        // MUSIC TAB
+        const song = document.getElementById("myLoveSong");
+        const musicBtn = document.getElementById("musicControl");
+
+        function toggleMusic() {
+            const musicIcon = document.getElementById("musicIcon"); // Target just the icon
+            
+            if (song.paused) {
+                song.play();
+                musicIcon.innerText = "pause_circle"; // Only change the icon text
+            } else {
+                song.pause();
+                musicIcon.innerText = "play_circle"; // Only change the icon text
+            }
+        }
+
+        // RANDOMIZER LOGIC
+        const reasons = [
+            "Your beautiful smile.",
+            "Your Playfulness like the way you make me laugh and smile. Kaya you may not know pero sobrang na-aappreciate ko iyon mga pangungulit mo with your reels and even your ka-randoman hehe.",
+            "Your genuine and kind heart.",
+            "Your supportiveness sa mga dreams, growth, and life ko. I am really blessed to have such a supporting someone as you hehe",
+            "Your faithfulness kay God. I really aspire kung paano mo isinasabuhay ang words Ni Lord hehehe.",
+            "Your very cute na laugh. Sarap pisilin sa cheeks!!",
+            "Your kagandahan. You're truly gorgeous, lovelove ko hehehe. If pwede lang, finlex kona in this world ang ganda mo.",
+            "Yung love mo for your family hehe. I really like kung gaano ka ka-thoughtful, and I admire yung pagiging responsible mo both as a child, and as a big sister kay Johanne.",
+            "Yung love and care mo for children and even the elderly. I really like your dream of supporting the youth by one day having an ADF-like institution hehe. I can't wait to see you achieve these aspirations. I'm here lang always para i-support ka, lovelove.",
+            "Your openness and pagiging true to yourself. I love how you show your self sa akin, nothing beats you for who you are parin hehe.",
+            "Your ambitiousness. I admire kung paano ka mag set ng goals in life hehe. One day, you'll be our nurse din, and whoever you want to be man.",
+            "Your dedication and independence. Like your other qualities, of course this is something I really admire you as well hehe. Ang hirap kaya ng life. Kaya naman I would also want to remind you here na andito lang ako for you; you're never alone. I know that you are strong, pero andito parin ako to help you in any way hehe"
+        ];
+
+        function getRandomReason() {
+            const random = Math.floor(Math.random() * reasons.length);
+            document.getElementById('reason-display').innerText = reasons[random];
+        }
+
+        // LETTERS LOGIC
+        const messages = {
+            sad: "It's completely okay to be feeling down. I'm here lang always with you love. Virtual hugs! ❤️",
+            happy: "I love seeing you shine! hehehe, can't wait to see your smiles!😇",
+            missing: "I'm missing you too, Cha! Call me when you can! Magkikita rin tayo soon hehe.😉"
+        };
+
+        function readLetter(type) {
+            document.getElementById('letter-display').innerText = messages[type];
+        }
+
+        function showReason() {
+        alert("I love you! -- Philip");
+        }
+
+        //
+
+        // Set the date we're counting down to
+        const targetDate = new Date("Jan 1, 2026 00:00:00").getTime();
+
+        // Update the count down every 1 second
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            // Calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Output the result in the element with id="timer"
+            document.getElementById("timer").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+
+            // If the count down is over
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                document.getElementById("timer").innerHTML = "Into 2026, With You! ❤️";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
